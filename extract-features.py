@@ -3,7 +3,9 @@
 import sys
 import re
 from os import listdir
-
+import nltk
+#from nltk.corpus import stopwords
+#nltk.download('stopwords')
 from xml.dom.minidom import parse
 from nltk.tokenize import word_tokenize
 
@@ -43,6 +45,7 @@ def get_tag(token, spans) :
 
 def extract_features(tokens) :
 
+   #stopWords = set(stopwords.words('english'))
    # for each token, generate list of features and add it to the result
    result = []
    for k in range(0,len(tokens)):
@@ -55,9 +58,12 @@ def extract_features(tokens) :
       tokenFeatures.append("speialChars=" + str(bool(re.search("(?=.[a-zA-Z])(?=.[-()0-9])", t))))
       tokenFeatures.append("firstCap=" + str(bool(t[0].isupper() and t[1:].islower())))
       tokenFeatures.append("allCap-1=" + str(bool(t[:-2].isupper())))
-      tokenFeatures.append("post3" +t[:3])
-      tokenFeatures.append("suf1="+t[-1:])
+      #tokenFeatures.append("post3" +t[:3])
+      tokenFeatures.append("post4" + t[:4])
+      #tokenFeatures.append("suf1="+t[-1:])
       tokenFeatures.append("len="+str(len(t)))
+      #tokenFeatures.append("nUpper=" + str(sum([c.isdigit() for c in t])))
+      #tokenFeatures.append("stop=" + str(bool(t.lower() in stopWords)))
 
 
 #      if k>2 :
@@ -77,7 +83,7 @@ def extract_features(tokens) :
          tokenFeatures.append("formPrevLower=" + tPrev.lower())
          tokenFeatures.append("formPrev="+tPrev)
          tokenFeatures.append("suf3Prev="+tPrev[-3:])
-         tokenFeatures.append("allCap-1Prev=" + str(bool(tPrev[:-2].isupper())))
+         #tokenFeatures.append("allCap-1Prev=" + str(bool(tPrev[:-2].isupper())))
          #tokenFeatures.append("firstCapPrev=" + str(bool(tPrev[0].isupper() and tPrev[1:].islower())))
          #tokenFeatures.append("post3Prev" + tPrev[:3])
       else :
@@ -89,6 +95,7 @@ def extract_features(tokens) :
          tokenFeatures.append("formNext="+tNext)
          tokenFeatures.append("suf3Next="+tNext[-3:])
          tokenFeatures.append("allCap-1Next=" + str(bool(tNext[:-2].isupper())))
+
          #tokenFeatures.append("firstCapNext=" + str(bool(tNext[0].isupper() and tNext[1:].islower())))
          #tokenFeatures.append("post3Next" + tNext[:3])
          #tokenFeatures.append("lenNext=" + str(len(tNext)))
