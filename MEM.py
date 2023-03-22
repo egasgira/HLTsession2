@@ -69,6 +69,7 @@ class MEM:
     ## --------------------------------------------------
     def best_class(self, context) :
         dist = self.prob_dist_z(context)
+        if len(dist) == 0: return 0
         return max(dist, key=lambda key: dist[key])
 
     ## --------------------------------------------------
